@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <title></title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="index">
+        <div class="item-index">
+          <label> VN30: <span>1,088.66</span> </label>
+          <img src="assets/img/icon-up.png" alt="" />
+          <label class="up"> 1.30(0,12%) </label>
+        </div>
+        <div class="item-index">
+          <label> VN30F1M: <span>1,088.66</span> </label>
+          <img src="assets/img/icon-down.png" alt="" />
+          <label class="down"> 1.30(0,12%) </label>
+        </div>
+        <div class="item-index">
+          <label> VN30F2M: <span>1,088.66</span> </label>
+          <img src="assets/img/icon-down.png" alt="" />
+          <label class="down"> 1.30(0,12%) </label>
+        </div>
+      </div>
+      <div class="account">
+        <div class="info">
+          <div id="username"></div>
+          <div id="number-acc"></div>
+        </div>
+        <a id="icon-login"><img src="assets/img/icon-acc.png" /></a>
+      </div>
+    </header>
+    <main class="main">
+      <div class="container-left">
+        <div class="nganh bg-color">
+          <div class="title">Ngành</div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tên</th>
+                <th>Chỉ số</th>
+                <th>Chỉ số</th>
+                <th>Chỉ số</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="bds bg-color">
+          <div class="title">Bất động sản</div>
+        </div>
+        <div class="theo-doi bg-color">
+          <div class="title">Theo dõi</div>
+        </div>
+        <div class="tai-san bg-color">
+          <div class="title">Tài sản</div>
+        </div>
+      </div>
+      <div class="container-right">
+        <div class="bg-color danh-muc">
+          <div class="title">Danh mục</div>
+          <div class="tab">
+            <div class="tab-item active">Tài sản</div>
+            <div class="tab-item">Tiền</div>
+          </div>
+          <div class="tai-san">
+            <div class="total">
+              <div class="ts bd-right">
+                <span class="ts-title"> Giá trị chứng khoán </span>
+                <span class="ts-value" id="value-sym">
+                  0
+                  <!-- {numberFormat(_total?.market_value, 0, '0')} -->
+                </span>
+              </div>
+              <div class="ts">
+                <span class="ts-title"> Lãi lỗ </span>
+                <span class="ts-value" id="lai-lo">
+                  0
+                  <!-- {numberFormat(_total?.gain_loss_value, 0, '0')} -->
+                </span>
+              </div>
+              <div class="ts bd-right">
+                <span class="ts-title"> Tổng nợ </span>
+                <span class="ts-value" id="tong-no">
+                  0
+                  <!-- {numberFormat(cashBalance?.debt, 0, '0')} -->
+                </span>
+              </div>
+              <div class="ts">
+                <span class="ts-title"> Tiền mặt </span>
+                <span class="ts-value" id="tien-mat">
+                  0
+                  <!-- {numberFormat(cashBalance?.cash_balance, 0, '0')} -->
+                </span>
+              </div>
+              <div class="ts bd-right">
+                <span class="ts-title"> Tài sản ròng </span>
+                <span class="ts-value" id="ts-rong">
+                  0
+                  <!-- {numberFormat( cashBalance?.equity || cashBalance?.assets, 0,
+                  '0' )} -->
+                </span>
+              </div>
+              <div class="ts">
+                <span class="ts-title"> Sức mua </span>
+                <span class="ts-value" id="pp">
+                  0
+                  <!-- {numberFormat(cashBalance?.cash_avai, 0, '0')} -->
+                </span>
+              </div>
+            </div>
+            <table class="table" id="table-ts">
+              <thead>
+                <tr>
+                  <th>Mã ck</th>
+                  <th>KL</th>
+                  <th>Giá TT</th>
+                  <th>Lãi lỗ</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <div class="bg-color lenh">
+          <div class="title">
+            Lệnh
+            <a class="img-change"><img src="assets/img/change.svg" /></a>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Mã ck</th>
+                <th>Loại lệnh</th>
+                <th>Trạng thái</th>
+                <th>Kl đặt</th>
+                <th>Giá đặt</th>
+                <th>Kl khớp</th>
+                <th>Giá khớp</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+    <div id="form-login" class="modal">
+      <div class="modal-content">
+        <form name="formLogin">
+          <div>
+            <div class="title">Đăng nhập</div>
+            <div>
+              <div class="label">Tên tài khoản</div>
+              <input name="username" type="text" placeholder="Tài khoản" />
+            </div>
+            <div class="mt-4 w-full">
+              <div class="label">Mật khẩu</div>
+              <input name="password" type="text" placeholder="Mật khẩu" />
+            </div>
+            <button id="btn-login" type="button">Đăng nhập</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="/js/ation.js"></script>
+  </body>
+</html>

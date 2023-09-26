@@ -117,37 +117,57 @@
                 </span>
               </div>
             </div>
-            <table class="table" id="table-ts">
-              <thead>
-                <tr>
-                  <th>Mã ck</th>
-                  <th>KL</th>
-                  <th>Giá TT</th>
-                  <th>Lãi lỗ</th>
-                </tr>
-              </thead>
-            </table>
+            <div style="overflow-y: auto; height: calc(50vh - 295px)">
+              <table class="table" id="table-ts">
+                <thead>
+                  <tr>
+                    <th>Mã ck</th>
+                    <th>KL</th>
+                    <th>Giá TT</th>
+                    <th>Lãi lỗ</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
         <div class="bg-color lenh">
           <div class="title">
             Lệnh
-            <a class="img-change"><img src="assets/img/change.svg" /></a>
+            <a class="img-change" id="change-order">
+              <img src="assets/img/change.svg" />
+            </a>
           </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Mã ck</th>
-                <th>Loại lệnh</th>
-                <th>Trạng thái</th>
-                <th>Kl đặt</th>
-                <th>Giá đặt</th>
-                <th>Kl khớp</th>
-                <th>Giá khớp</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <div style="overflow-y: auto; max-height: calc(50vh - 74px)">
+            <table class="table" id="inday-order">
+              <thead>
+                <tr>
+                  <th>Mã ck</th>
+                  <th>Loại lệnh</th>
+                  <th>Trạng thái</th>
+                  <th>Kl đặt</th>
+                  <th>Giá đặt</th>
+                  <th>Kl khớp</th>
+                  <th>Giá khớp</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <table class="table display-none" id="order-his">
+              <thead>
+                <tr>
+                  <th>Tài khoản</th>
+                  <th>Mã ck</th>
+                  <th>Loại lệnh</th>
+                  <th>Kl đặt</th>
+                  <th>Kl khớp</th>
+                  <th>Giá khớp</th>
+                  <th>Trạng thái lệnh</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>

@@ -6,16 +6,14 @@ var IndayOrder = true;
 let tokenStorage = JSON.parse(window.localStorage.getItem("token"));
 let allStockStorage = JSON.parse(window.localStorage.getItem("allStock"));
 
-// js login
 const rootImgLogin = document.getElementById("icon-login");
 const btnLogin = document.getElementById("btn-login");
 const userName = document.getElementById("username");
 const numberAcc = document.getElementById("number-acc");
 const changeOrder = document.getElementById("change-order");
 
-document.onclose = function Close() {
-  window.localStorage.removeItem("token");
-  window.localStorage.removeItem("allStock");
+window.onunload = () => {
+  localStorage.clear();
 };
 
 rootImgLogin.onclick = function OpenLogin() {
@@ -57,10 +55,6 @@ changeOrder.onclick = function changeOrder() {
     IndayOrder = true;
   }
 };
-
-document.addEventListener("beforeunload", function () {
-  localStorage.clear();
-});
 
 async function getLogin(_params) {
   try {
@@ -109,7 +103,6 @@ async function getAccStatus(token) {
   if (result.rc < 1) {
     window.alert(result.rs);
   } else {
-    // window.localStorage.setItem("accStatus", JSON.stringify(result.data));
     renderAccStatus(result.data);
   }
 }
@@ -136,7 +129,6 @@ async function getPortfolioStatus(token) {
   if (result.rc < 1) {
     window.alert(result.rs);
   } else {
-    // window.localStorage.setItem("positions", JSON.stringify(result.data));
     renderPositions(result.data);
   }
 }
@@ -167,7 +159,6 @@ async function getIndayOrder(token) {
   if (result.rc < 1) {
     window.alert(result.rs);
   } else {
-    // window.localStorage.setItem("indayOrder", JSON.stringify(result.data));
     makeTableIndayOrder(result.data);
   }
 }
@@ -244,7 +235,6 @@ async function getOrderHis(token) {
   if (result.rc < 1) {
     window.alert(result.rs);
   } else {
-    // window.localStorage.setItem("orderHis", JSON.stringify(result.data));
     makeTableOrderHis(result.data);
   }
 }
@@ -260,8 +250,8 @@ async function getAllStock() {
   }
 }
 
-// ht account và lấy tài sản khi có token
-if (tokenStorage) handleChangeData(tokenStorage);
+// hiển thị account và lấy tài sản khi có token
+// if (tokenStorage) handleChangeData(tokenStorage);
 
 function handleChangeData(token) {
   if (token) {
@@ -278,17 +268,41 @@ function handleChangeData(token) {
 // hiển thị tài sản
 
 function renderAccStatus(accStatus) {
-  document.getElementById("tong-no").innerHTML = accStatus?.debt | 0;
-  document.getElementById("tien-mat").innerHTML = accStatus?.cash_balance | 0;
-  document.getElementById("ts-rong").innerHTML = accStatus?.equity | 0;
-  document.getElementById("pp").innerHTML = accStatus?.cash_avai | 0;
+  document.getElementById("tong-no").innerHTML = numberFormat(
+    accStatus?.debt,
+    0,
+    "0"
+  );
+  document.getElementById("tien-mat").innerHTML = numberFormat(
+    accStatus?.cash_balance,
+    0,
+    "0"
+  );
+  document.getElementById("ts-rong").innerHTML = numberFormat(
+    accStatus?.equity,
+    0,
+    "0"
+  );
+  document.getElementById("pp").innerHTML = numberFormat(
+    accStatus?.cash_avai,
+    0,
+    "0"
+  );
 }
 
 function renderPositions(positions) {
   var _total = positions.find((o) => o.symbol === "TOTAL");
   var arrPositions = positions.filter((o) => o.symbol !== "TOTAL");
-  document.getElementById("value-sym").innerHTML = _total.market_value | 0;
-  document.getElementById("lai-lo").innerHTML = _total?.gain_loss_value | 0;
+  document.getElementById("value-sym").innerHTML = numberFormat(
+    _total?.market_value,
+    0,
+    "0"
+  );
+  document.getElementById("lai-lo").innerHTML = numberFormat(
+    _total?.gain_loss_value,
+    0,
+    "0"
+  );
   if (parseFloat(_total?.gain_loss_value) > 0) {
     document.getElementById("lai-lo").classList.add("up");
   } else if (parseFloat(_total?.gain_loss_value) < 0)
@@ -330,37 +344,6 @@ function makeTableTS(array) {
 }
 
 // hiển thị indey-order
-
-function getPostTo(stockCode) {
-  var arr = allStockStorage.find((o) => o.stock_code === stockCode);
-  if (arr) {
-    return arr?.post_to;
-  }
-}
-
-function getOrderStatus(sttCode, matchVol, orderVol, quote, index) {
-  if (sttCode === "P") {
-    return "Chờ khớp";
-  } else if (sttCode.endsWith("W")) {
-    return "Chờ hủy";
-  } else if (sttCode.endsWith("M")) {
-    if (StringToInt(matchVol) === StringToInt(orderVol)) return "Đã khớp";
-
-    return "Khớp 1 phần";
-  } else if (sttCode.endsWith("X")) {
-    if (StringToInt(matchVol) > 0) return "Khớp 1 phần, 1 phần đã hủy";
-    return "Đã hủy";
-  } else if (sttCode.endsWith("C")) {
-    if (index === "HNX" && quote === "G") return "Chờ sửa";
-    if (index === "HNX" && quote === "Y") return "Chờ khớp";
-    return "Đã sửa";
-  } else if (sttCode.indexOf("R") > 0) {
-    return "Từ chối";
-  }
-
-  return sttCode;
-}
-
 function makeTableIndayOrder(array) {
   const tbody = document.createElement("tbody");
   for (var i = 0; i < array.length; i++) {
@@ -448,4 +431,68 @@ function makeTableOrderHis(array) {
   }
   const tableContainer = document.getElementById("order-his");
   tableContainer.appendChild(tbody);
+}
+
+//function
+function pick(...manyMoreArgs) {
+  let a = manyMoreArgs,
+    c,
+    r,
+    u = a.length;
+  for (c = 0; c < u; c++)
+    if (((r = a[c]), void 0 !== r && null !== r)) return r;
+}
+
+function numberFormat(h, c, t, r, u) {
+  if (h === "ATO" || h === "ATC") return h;
+  h = +h || 0;
+  c = +c;
+  let w = (h.toString().split(".")[1] || "").split("e")[0].length,
+    n,
+    g,
+    d = h.toString().split("e");
+
+  g = (
+    Math.abs(d[1] ? Number(d[0]) : h) + Math.pow(10, -Math.max(c, w) - 1)
+  ).toFixed(c);
+  w = String(parseInt(g, 10));
+  n = 3 < w.length ? w.length % 3 : 0;
+  r = pick(r, ".");
+  u = pick(u, ",");
+  h = (0 > h ? "-" : "") + (n ? w.substr(0, n) + u : "");
+  h += w.substr(n).replace(/(\d{3})(?=\d)/g, "$1" + u);
+  c && (h += r + g.slice(-c));
+  d[1] && 0 !== +h && (h += "e" + d[1]);
+  if (Number(h) == 0) return t;
+  return h;
+}
+
+function getPostTo(stockCode) {
+  var arr = allStockStorage?.find((o) => o.stock_code === stockCode);
+  if (arr) {
+    return arr.post_to;
+  } else return "";
+}
+
+function getOrderStatus(sttCode, matchVol, orderVol, quote, index) {
+  if (sttCode === "P") {
+    return "Chờ khớp";
+  } else if (sttCode.endsWith("W")) {
+    return "Chờ hủy";
+  } else if (sttCode.endsWith("M")) {
+    if (StringToInt(matchVol) === StringToInt(orderVol)) return "Đã khớp";
+
+    return "Khớp 1 phần";
+  } else if (sttCode.endsWith("X")) {
+    if (StringToInt(matchVol) > 0) return "Khớp 1 phần, 1 phần đã hủy";
+    return "Đã hủy";
+  } else if (sttCode.endsWith("C")) {
+    if (index === "HNX" && quote === "G") return "Chờ sửa";
+    if (index === "HNX" && quote === "Y") return "Chờ khớp";
+    return "Đã sửa";
+  } else if (sttCode.indexOf("R") > 0) {
+    return "Từ chối";
+  }
+
+  return sttCode;
 }

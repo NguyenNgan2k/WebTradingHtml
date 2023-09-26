@@ -63,20 +63,24 @@ document.addEventListener("beforeunload", function () {
 });
 
 async function getLogin(_params) {
-  var response = await fetch(apiUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    },
-    body: JSON.stringify(_params),
-  });
-  var result = await response.json();
-  if (result.rc < 1) {
-    window.alert(result.rs);
-  } else {
-    window.localStorage.setItem("token", JSON.stringify(result.data));
-    window.localStorage.setItem("login", "true");
-    handleChangeData(result.data);
+  try {
+    var response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      },
+      body: JSON.stringify(_params),
+    });
+    var result = await response.json();
+    if (result.rc < 1) {
+      window.alert(result.rs);
+    } else {
+      window.localStorage.setItem("token", JSON.stringify(result.data));
+      window.localStorage.setItem("login", "true");
+      handleChangeData(result.data);
+    }
+  } catch (error) {
+    window.alert(error);
   }
 }
 
